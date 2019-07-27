@@ -1,8 +1,6 @@
-def empty_tile(tiles: {}):
-    for tile in tiles.keys():
-        if tiles[tile] == 0:
-            return tile
-
+#############
+# Board class
+#############
 
 class Board:
     tiles = {}
@@ -13,56 +11,82 @@ class Board:
     @classmethod
     def from_dictionary(cls, tiles: {}) -> 'Board':
         cls.tiles = tiles
+        cls.empty_tile_location = get_empty_tile_location(cls.tiles)
+
         return cls()
 
-    def build(self):
-        for i in range(0, 9):
-            self.tiles[i] = int(input("Enter tile " + str(i) + " value: "))
-        self.tiles["empty_tile"] = empty_tile(self.tiles)
+    @classmethod
+    def from_input(cls, size: int) -> 'Board':
+        for i in range(0, size):
+            cls.tiles[i] = int(input("Enter tile " + str(i) + " value: "))
+            print(cls.tiles)
+        cls.empty_tile_location = get_empty_tile_location(cls.tiles)
 
-    def validate(self):
-        return
+        return cls()
 
     def up(self) -> 'Board':
         if self.can_move_up():
-            board = Board.from_dictionary(self.tiles)
-            temp = int(board.tiles[board.tiles["empty_tile"]-3])
-            board.tiles[board.tiles["empty_tile"] - 3]= board.tiles[board.tiles["empty_tile"]]
-            board.tiles[board.tiles["empty_tile"]] = temp
-            board.tiles["empty_tile"]= board.tiles["empty_tile"]-3
+            board = swap(self.empty_tile_location - 3, self.empty_tile_location, self)
+
             return board
         else:
             raise Exception("cannot move up")
 
-    def down(self):
-        return
+    def down(self) -> 'Board':
+        if self.can_move_down():
+            board = swap(self.empty_tile_location + 3, self.empty_tile_location, self)
 
-    def left(self):
-        return
+            return board
+        else:
+            raise Exception("cannot move down")
 
-    def right(self):
-        return
+    def left(self) -> 'Board':
+        if self.can_move_left():
+            board = swap(self.empty_tile_location - 1, self.empty_tile_location, self)
+
+            return board
+        else:
+            raise Exception("cannot move left")
+
+    def right(self) -> 'Board':
+        if self.can_move_right():
+            board = swap(self.empty_tile_location + 1, self.empty_tile_location, self)
+
+            return board
+        else:
+            raise Exception("cannot move right")
 
     def can_move_up(self) -> 'bool':
-        if int(self.tiles["empty_tile"]) == 0 or int(self.tiles["empty_tile"]) == 1 or int(self.tiles["empty_tile"]) == 2:
-            return False
-        else:
-            return True
+        return not (int(self.empty_tile_location) == 0 or int(self.empty_tile_location) == 1 or int(
+            self.empty_tile_location) == 2)
 
     def can_move_down(self) -> 'bool':
-        if int(self.tiles["empty_tile"]) == 6 or int(self.tiles["empty_tile"]) == 7 or int(self.tiles["empty_tile"]) == 8:
-            return False
-        else:
-            return True
+        return not (int(self.empty_tile_location) == 6 or int(self.empty_tile_location) == 7 or int(
+            self.empty_tile_location) == 8)
 
     def can_move_left(self) -> 'bool':
-        if int(self.tiles["empty_tile"]) == 0 or int(self.tiles["empty_tile"]) == 3 or int(self.tiles["empty_tile"]) == 6:
-            return False
-        else:
-            return True
+        return not (int(self.empty_tile_location) == 0 or int(self.empty_tile_location) == 3 or int(
+            self.empty_tile_location) == 6)
 
     def can_move_right(self) -> 'bool':
-        if int(self.tiles["empty_tile"]) == 2 or int(self.tiles["empty_tile"]) == 5 or int(self.tiles["empty_tile"]) == 8:
-            return False
-        else:
-            return True
+        return not (int(self.empty_tile_location) == 2 or int(self.empty_tile_location) == 5 or int(
+            self.empty_tile_location) == 8)
+
+
+################
+# helper methods
+################
+
+def get_empty_tile_location(tiles: {}) -> 'int':
+    for tile in tiles.keys():
+        if tiles[tile] == 0:
+            return tile
+
+
+def swap(x: int, y: int, old_board: Board) -> 'Board':
+    board = Board.from_dictionary(old_board.tiles)
+    temp = board.tiles[x]
+    board.tiles[x] = board.tiles[y]
+    board.tiles[y] = temp
+
+    return board
