@@ -2,7 +2,8 @@ import queue
 from Board import Board
 from Node import Node
 import random
-import heapq
+from sklearn.metrics.pairwise import euclidean_distances
+from sklearn.neighbors import DistanceMetric
 
 
 class Algorithms:
@@ -23,6 +24,32 @@ class Algorithms:
         while not frontier.empty():
             state = frontier.get_nowait()
 
+            print(list(state.board.tiles.values()))
+
+            if state.board.__eq__(self.goal):
+                return True
+
+            explored.append(state.board.tiles)
+            expanded += 1
+
+            state.set_children()
+
+            for child in state.children:
+                if child.board.tiles not in list(frontier.queue) and child.board.tiles not in explored:
+                    frontier.put_nowait(child)
+
+        return False
+
+    def a_star_search(self, heuristic: str) -> 'bool':
+
+        frontier = queue.PriorityQueue()
+        explored = []
+        expanded = 0
+        frontier.put_nowait(self.initial_state)
+
+        while not frontier.empty():
+            state = frontier.get_nowait()
+
             if state.board.tiles in explored:
                 continue
 
@@ -35,26 +62,15 @@ class Algorithms:
             state.set_children()
 
             for child in state.children:
-                print(child.board.tiles)
-                frontier.put_nowait(child)
+                if heuristic == 'euclidean':
+                    dist = DistanceMetric.get_metric('euclidean')
+                    print(list(child.board.tiles.values()))
+                    X = [list(child.board.tiles.values()),
+                         list(self.goal.tiles.values())]
+                    array = dist.pairwise(X)
+                    frontier.put_nowait(array)
 
         return False
-
-    def a_star_search(self, initial_state: Board, goal: Board) -> 'bool':
-
-        frontier = queue.PriorityQueue()
-        explored = set()
-
-        while not p_queue.empty():
-            state = frontier.get_nowait()
-
-            if state.board.tiles in explored:
-                continue
-
-            if state.board.__eq__(self.goal):
-
-                return True
-        return
 
     def dfs_search(self, initial_state: Board, goal: Board) -> 'bool':
 
