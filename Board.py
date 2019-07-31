@@ -10,8 +10,8 @@ class Board:
     actions = list()
 
     def __eq__(self, board: 'Board') -> 'bool':
-        for key in list(self.tiles.keys()):
-            if key not in list(board.tiles.keys()):
+        for i in range(0, 9):
+            if self.tiles[i] != board.tiles[i]:
                 return False
         return True
 
