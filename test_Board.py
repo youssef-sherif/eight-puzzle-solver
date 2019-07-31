@@ -7,11 +7,11 @@ class TestBoardUpMovement(unittest.TestCase):
     def setUp(self):
         self.before_1 = \
             {0: 4, 1: 1, 2: 2,
-             3: 3, 4: 0, 5: 5,
-             6: 6, 7: 7, 8: 8}
+             3: 3, 4: 5, 5: 8,
+             6: 6, 7: 7, 8: 0}
         self.after_1 = \
-            {0: 4, 1: 0, 2: 2,
-             3: 3, 4: 1, 5: 5,
+            {0: 4, 1: 1, 2: 2,
+             3: 3, 4: 5, 5: 0,
              6: 6, 7: 7, 8: 8}
 
         self.before_2 = \
@@ -34,6 +34,18 @@ class TestBoardUpMovement(unittest.TestCase):
         self.assertEqual(board.tiles, self.after_1)
 
         board = Board.from_dictionary(self.before_2)
+        board.up()
+        self.assertEqual(board.tiles, self.after_2)
+
+        board = Board.from_dictionary(self.invalid)
+        with self.assertRaises(Exception) as context:
+            board.up()
+        self.assertTrue("cannot move up" in str(context.exception))
+
+    def test_more_than_one(self):
+        board = Board.from_dictionary(self.before_1)
+        board.up()
+        self.assertEqual(board.tiles, self.after_1)
         board.up()
         self.assertEqual(board.tiles, self.after_2)
 
