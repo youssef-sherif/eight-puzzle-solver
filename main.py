@@ -28,8 +28,10 @@ try:
 except Exception as e:
     print(e)
 node = Node(board)
-print(node.board.tiles)
-node.set_children()
-print(node.board.tiles)
-print(node.children)
-print(node.children[0].parent.board.tiles)
+node.set_up()
+# print(node.board.tiles)
+# node.set_children()
+# print(node.board.up().tiles)
+# for child in node.children:
+#     print(child.board.tiles)
+# print(node.children)

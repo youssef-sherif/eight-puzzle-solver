@@ -15,6 +15,7 @@ class Node:
 
     @classmethod
     def from_node(cls, input_board: Board, parent: 'Node'):
+
         cls.parent = parent
         return cls(input_board)
 
@@ -23,8 +24,12 @@ class Node:
 
     def set_up(self):
         try:
-            self.up = Node.from_node(self.board.up(), self)
-            self.children.append(self.up)
+
+            print(self.board.tiles)
+            print(self.board.up().tiles)
+            print(self.board.tiles)
+            # self.up = Node.from_node(self.board.up(), self)
+            # self.children.append(self.up)
             return self.up
         except Exception as e:
             print(e)
