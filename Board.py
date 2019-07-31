@@ -28,7 +28,6 @@ class Board:
     @classmethod
     def from_array(cls, numbers: []) -> 'Board':
         tiles = {}
-        cls.actions = list()
         for i in range(0, 9):
             tiles[i] = numbers[i]
         cls.tiles = tiles
