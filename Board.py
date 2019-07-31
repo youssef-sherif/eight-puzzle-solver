@@ -1,3 +1,5 @@
+import copy
+
 #############
 # Board class
 #############
@@ -13,15 +15,15 @@ class Board:
                 return False
         return True
 
-    def __init__(self):
-        return
+    def __init__(self, tiles):
+        self.tiles = tiles
 
     @classmethod
     def from_previous(cls, tiles: {}) -> 'Board':
         cls.tiles = tiles.copy()
         cls.empty_tile_location = int(get_empty_tile_location(cls.tiles))
 
-        return cls()
+        return cls(cls.tiles)
 
     @classmethod
     def from_array(cls, numbers: []) -> 'Board':
@@ -32,7 +34,7 @@ class Board:
         cls.tiles = tiles
         cls.empty_tile_location = int(get_empty_tile_location(cls.tiles))
 
-        return cls()
+        return cls(cls.tiles)
 
     def solution_json(self):
 
