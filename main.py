@@ -1,12 +1,27 @@
 from sklearn.metrics.pairwise import manhattan_distances
 from sklearn.neighbors import DistanceMetric
 from Board import Board
-
-board = Board.from_input(9)
+import random
+import copy
 
 try:
-    board = board.up()
-    print(board.tiles)
+    original = Board.from_array(random.sample(range(0, 9), 9))
+    print(original)
+    print(original.tiles)
+    board1 = original.up()
+    print(board1)
+    print(board1.tiles)
+    board2 = board1.up()
+    print(board2)
+    print(board2.tiles)
+
+    print("original values:")
+    print(original)
+    print(original.tiles)
+    print(board1)
+    print(board1.tiles)
+    print(board2)
+    print(board2.tiles)
 except Exception as e:
     print(e)
 
