@@ -17,11 +17,11 @@ class Board:
 
     def __init__(self, tiles: {}):
         self.tiles = tiles
+        self.empty_tile_location = int(get_empty_tile_location(self.tiles))
 
     @classmethod
     def from_previous(cls, tiles: {}) -> 'Board':
         cls.tiles = tiles.copy()
-        cls.empty_tile_location = int(get_empty_tile_location(cls.tiles))
 
         return cls(cls.tiles)
 
@@ -32,7 +32,6 @@ class Board:
         for i in range(0, 9):
             tiles[i] = numbers[i]
         cls.tiles = tiles
-        cls.empty_tile_location = int(get_empty_tile_location(cls.tiles))
 
         return cls(cls.tiles)
 
@@ -47,6 +46,7 @@ class Board:
         if self.can_move_up():
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location - 3, self.empty_tile_location, board)
+            board.empty_tile_location = int(get_empty_tile_location(board.tiles))
             self.actions.insert(self.actions.__len__(), 'up')
 
             return board
@@ -57,6 +57,7 @@ class Board:
         if self.can_move_down():
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location + 3, self.empty_tile_location, board)
+            board.empty_tile_location = int(get_empty_tile_location(board.tiles))
             self.actions.insert(self.actions.__len__(), 'down')
 
             return board
@@ -67,6 +68,7 @@ class Board:
         if self.can_move_left():
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location - 1, self.empty_tile_location, board)
+            board.empty_tile_location = int(get_empty_tile_location(board.tiles))
             self.actions.insert(self.actions.__len__(), 'left')
 
             return board
@@ -77,6 +79,7 @@ class Board:
         if self.can_move_right():
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location + 1, self.empty_tile_location, board)
+            board.empty_tile_location = int(get_empty_tile_location(board.tiles))
             self.actions.insert(self.actions.__len__(), 'right')
 
             return board
