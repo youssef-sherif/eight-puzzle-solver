@@ -27,14 +27,16 @@ class Node:
         try:
             self.up = Node.from_node(self.board.up(), self)
             self.children.append(self.up)
-            return self.up
+            print('move up')
         except Exception as e:
             print(e)
+        return self.up
 
     def set_down(self):
         try:
             self.down = Node.from_node(self.board.down(),self)
             self.children.append(self.down)
+            print('move down')
         except Exception as e:
             print(e)
         return self.down
@@ -43,6 +45,7 @@ class Node:
         try:
             self.left = Node.from_node(self.board.left(),self)
             self.children.append(self.left)
+            print('move left')
         except Exception as e:
             print(e)
         return self.left
@@ -51,6 +54,7 @@ class Node:
         try:
             self.right = Node.from_node(self.board.right(),self)
             self.children.append(self.right)
+            print('move right')
         except Exception as e:
             print(e)
         return self.right
