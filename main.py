@@ -20,7 +20,7 @@ import random
 #
 # array = dist.pairwise(X)
 
-from Tree import Node
+from node import Node
 from Board import Board
 x= random.sample(range(0, 9), 9)
 try:
@@ -28,10 +28,10 @@ try:
 except Exception as e:
     print(e)
 node = Node(board)
-node.set_up()
-# print(node.board.tiles)
-# node.set_children()
+print(node.board.tiles)
+node.set_children()
 # print(node.board.up().tiles)
-# for child in node.children:
-#     print(child.board.tiles)
-# print(node.children)
+for child in node.children:
+    print(child.board.tiles)
+print(node.children)
+print(node.board.tiles)
