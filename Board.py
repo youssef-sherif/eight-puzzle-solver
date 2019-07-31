@@ -15,7 +15,7 @@ class Board:
                 return False
         return True
 
-    def __init__(self, tiles):
+    def __init__(self, tiles: {}):
         self.tiles = tiles
 
     @classmethod
