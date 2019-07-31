@@ -18,7 +18,7 @@ class Board:
 
     @classmethod
     def from_previous(cls, tiles: {}) -> 'Board':
-        cls.tiles = tiles
+        cls.tiles = tiles.copy()
         cls.empty_tile_location = int(get_empty_tile_location(cls.tiles))
 
         return cls()
