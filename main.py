@@ -1,30 +1,3 @@
-from sklearn.metrics.pairwise import manhattan_distances
-from sklearn.neighbors import DistanceMetric
-from Board import Board
-import random
-import copy
-
-try:
-    original = Board.from_array(random.sample(range(0, 9), 9))
-    print(original)
-    print(original.tiles)
-    board1 = original.up()
-    print(board1)
-    print(board1.tiles)
-    board2 = board1.up()
-    print(board2)
-    print(board2.tiles)
-
-    print("original values:")
-    print(original)
-    print(original.tiles)
-    print(board1)
-    print(board1.tiles)
-    print(board2)
-    print(board2.tiles)
-except Exception as e:
-    print(e)
-
 ###########################
 # this will be useful later
 ###########################
@@ -34,3 +7,19 @@ except Exception as e:
 #          [3, 4, 5]]
 #
 # array = dist.pairwise(X)
+
+from node import Node
+from Board import Board
+x= random.sample(range(0, 9), 9)
+try:
+    board= Board.from_array(x)
+except Exception as e:
+    print(e)
+node = Node(board)
+print(node.board.tiles)
+node.set_children()
+# print(node.board.up().tiles)
+for child in node.children:
+    print(child.board.tiles)
+print(node.children)
+print(node.board.tiles)
