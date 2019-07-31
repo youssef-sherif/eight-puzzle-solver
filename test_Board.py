@@ -1,6 +1,25 @@
 import unittest
 from Board import Board
 
+class BoardTests(unittest.TestCase):
+
+    def setUp(self):
+        self.a = \
+            {0: 4, 1: 1, 2: 2,
+             3: 3, 4: 5, 5: 8,
+             6: 6, 7: 7, 8: 0}
+        self.b = \
+            {0: 4, 1: 1, 2: 2,
+             3: 3, 4: 5, 5: 8,
+             6: 6, 7: 7, 8: 0}
+
+    def test_eq(self):
+        board_a = Board.from_previous(self.a)
+        board_b = Board.from_previous(self.b)
+        self.assertTrue(board_a.__eq__(board_b))
+
+
+
 
 class TestBoardUpMovement(unittest.TestCase):
 

@@ -35,19 +35,11 @@ class Board:
 
         return cls(cls.tiles)
 
-    def solution_json(self):
-
-        return {
-            'actions': self.actions,
-            'solution': self.tiles
-        }
-
     def up(self) -> 'Board':
         if self.can_move_up():
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location - 3, self.empty_tile_location, board)
             board.empty_tile_location = int(get_empty_tile_location(board.tiles))
-            self.actions.insert(self.actions.__len__(), 'up')
 
             return board
         else:
@@ -58,7 +50,6 @@ class Board:
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location + 3, self.empty_tile_location, board)
             board.empty_tile_location = int(get_empty_tile_location(board.tiles))
-            self.actions.insert(self.actions.__len__(), 'down')
 
             return board
         else:
@@ -69,7 +60,6 @@ class Board:
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location - 1, self.empty_tile_location, board)
             board.empty_tile_location = int(get_empty_tile_location(board.tiles))
-            self.actions.insert(self.actions.__len__(), 'left')
 
             return board
         else:
@@ -80,7 +70,6 @@ class Board:
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location + 1, self.empty_tile_location, board)
             board.empty_tile_location = int(get_empty_tile_location(board.tiles))
-            self.actions.insert(self.actions.__len__(), 'right')
 
             return board
         else:

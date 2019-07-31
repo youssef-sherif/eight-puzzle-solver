@@ -8,11 +8,13 @@ class Algorithms:
     def __init__(self):
         board = Board.from_array(random.sample(range(0, 9), 9))
         self.initialState = Node(board)
+        self.goal = Board.from_array([0,1, 2, 3, 4, 5, 6, 7, 8])
         return
 
     def bfs_search(self) -> 'bool':
 
-        frontier = queue.Queue(maxsize=32)
+        frontier = queue.Queue()
+        expanded = 0
         frontier.put_nowait(self.initial_state)
         explored = set()
 
@@ -20,7 +22,7 @@ class Algorithms:
             state = frontier.get_nowait()
             explored.add(state)
 
-            if state.__eq__(self.goal):
+            if state.board.__eq__(self.goal):
 
                 return True
 
