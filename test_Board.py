@@ -29,29 +29,17 @@ class TestBoardUpMovement(unittest.TestCase):
              6: 6, 7: 7, 8: 8}
 
     def test(self):
-        board = Board.from_dictionary(self.before_1)
-        board.up()
-        self.assertEqual(board.tiles, self.after_1)
+        board = Board.from_previous(self.before_1)
+        board1 = board.up()
+        self.assertEqual(board1.tiles, self.after_1)
 
-        board = Board.from_dictionary(self.before_2)
-        board.up()
-        self.assertEqual(board.tiles, self.after_2)
+        board = Board.from_previous(self.before_2)
+        board2 = board.up()
+        self.assertEqual(board2.tiles, self.after_2)
 
-        board = Board.from_dictionary(self.invalid)
+        invalid_board = Board.from_previous(self.invalid)
         with self.assertRaises(Exception) as context:
-            board.up()
-        self.assertTrue("cannot move up" in str(context.exception))
-
-    def test_more_than_one(self):
-        board = Board.from_dictionary(self.before_1)
-        board.up()
-        self.assertEqual(board.tiles, self.after_1)
-        board.up()
-        self.assertEqual(board.tiles, self.after_2)
-
-        board = Board.from_dictionary(self.invalid)
-        with self.assertRaises(Exception) as context:
-            board.up()
+            invalid_board.up()
         self.assertTrue("cannot move up" in str(context.exception))
 
 
@@ -82,17 +70,17 @@ class TestBoardDownMovement(unittest.TestCase):
              6: 0, 7: 7, 8: 8}
 
     def test(self):
-        board = Board.from_dictionary(self.before_1)
-        board.down()
-        self.assertEqual(board.tiles, self.after_1)
+        board = Board.from_previous(self.before_1)
+        board1 = board.down()
+        self.assertEqual(board1.tiles, self.after_1)
 
-        board = Board.from_dictionary(self.before_2)
-        board.down()
-        self.assertEqual(board.tiles, self.after_2)
+        board = Board.from_previous(self.before_2)
+        board2 = board.down()
+        self.assertEqual(board2.tiles, self.after_2)
 
-        board = Board.from_dictionary(self.invalid)
+        invalid_board = Board.from_previous(self.invalid)
         with self.assertRaises(Exception) as context:
-            board.down()
+            invalid_board.down()
         self.assertTrue("cannot move down" in str(context.exception))
 
 
@@ -123,17 +111,17 @@ class TestBoardLeftMovement(unittest.TestCase):
              6: 0, 7: 7, 8: 8}
 
     def test(self):
-        board = Board.from_dictionary(self.before_1)
-        board.left()
-        self.assertEqual(board.tiles, self.after_1)
+        board = Board.from_previous(self.before_1)
+        board1 = board.left()
+        self.assertEqual(board1.tiles, self.after_1)
 
-        board = Board.from_dictionary(self.before_2)
-        board.left()
-        self.assertEqual(board.tiles, self.after_2)
+        board = Board.from_previous(self.before_2)
+        board2 = board.left()
+        self.assertEqual(board2.tiles, self.after_2)
 
-        board = Board.from_dictionary(self.invalid)
+        invalid_board = Board.from_previous(self.invalid)
         with self.assertRaises(Exception) as context:
-            board.left()
+            invalid_board.left()
         self.assertTrue("cannot move left" in str(context.exception))
 
 
@@ -164,19 +152,18 @@ class TestBoardRightMovement(unittest.TestCase):
              6: 8, 7: 7, 8: 0}
 
     def test(self):
-        board = Board.from_dictionary(self.before_1)
-        board.right()
-        self.assertEqual(board.tiles, self.after_1)
+        board = Board.from_previous(self.before_1)
+        board1 = board.right()
+        self.assertEqual(board1.tiles, self.after_1)
 
-        board = Board.from_dictionary(self.before_2)
-        board.right()
-        self.assertEqual(board.tiles, self.after_2)
+        board = Board.from_previous(self.before_2)
+        board2 = board.right()
+        self.assertEqual(board2.tiles, self.after_2)
 
-        board = Board.from_dictionary(self.invalid)
+        invalid_board = Board.from_previous(self.invalid)
         with self.assertRaises(Exception) as context:
-            board.right()
+            invalid_board.right()
         self.assertTrue("cannot move right" in str(context.exception))
-
 
 if __name__ == '__main__':
     unittest.main()
