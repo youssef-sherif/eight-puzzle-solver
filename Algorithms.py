@@ -1,9 +1,11 @@
 import queue
+import heapq
 from Board import Board
 from Node import Node
 import random
 from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.neighbors import DistanceMetric
+import numpy as np
 
 
 class Algorithms:
@@ -52,15 +54,28 @@ class Algorithms:
         frontier = queue.PriorityQueue()
         explored = []
         expanded = 0
-        frontier.put_nowait(self.initial_state)
+
+        if heuristic == 'euclidean':
+            dist = DistanceMetric.get_metric('euclidean')
+        elif heuristic == 'manhattan':
+            dist = DistanceMetric.get_metric('manhattan')
+
+        X = [list(self.initial_state.board.tiles.values()),
+             list(self.goal.tiles.values())]
+
+        self.initial_state.set_distance(dist.pairwise(X))
+
+        frontier.put(self.initial_state)
 
         while not frontier.empty():
-            state = frontier.get_nowait()
-
-            if state.board.tiles in explored:
-                continue
+            state = frontier.get()
 
             if state.board.__eq__(self.goal):
+                self.expanded = expanded
+                nodes = state.backtrack()
+                for node in nodes:
+                    self.actions_taken.append(node.action_taken)
+
                 return True
 
             explored.append(state.board.tiles)
@@ -69,14 +84,14 @@ class Algorithms:
             state.set_children()
 
             for neighbour in state.get_neighbours():
-                if heuristic == 'euclidean':
-                    dist = DistanceMetric.get_metric('euclidean')
-                    X = [list(neighbour.board.tiles.values()),
-                         list(self.goal.tiles.values())]
-                    print(X)
-                    array = dist.pairwise(X)
-                    print(array)
-                    frontier.put_nowait(array)
+                if neighbour is not None:
+                    if neighbour.board.tiles not in list(frontier.queue) and neighbour.board.tiles not in explored:
+                        X = [list(neighbour.board.tiles.values()),
+                             list(self.goal.tiles.values())]
+                        neighbour.set_distance(dist.pairwise(X))
+                        frontier.put(neighbour)
+                    elif neighbour.board.tiles in list(frontier.queue):
+                        print(neighbour.board.tiles)
 
         return False
 
@@ -103,6 +118,5 @@ class Algorithms:
 
         return {
             'actions': self.actions_taken,
-            # 'solution': self.tiles,
             'nodes_expanded': self.expanded
         }

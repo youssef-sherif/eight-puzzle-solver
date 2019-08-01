@@ -1,5 +1,5 @@
 from Board import Board
-# from Queue import Queue
+import numpy as np
 
 
 class Node:
@@ -14,6 +14,10 @@ class Node:
         self.right = None
         self.parent = None
         self.action_taken = "start"
+        self.distance = []
+
+    def __lt__(self, other):
+        return np.greater_equal(self.distance, other.distance).all()
 
     @classmethod
     def from_node(cls, input_board: Board, parent: 'Node'):
@@ -82,3 +86,6 @@ class Node:
         neighbours = [self.parent]
         neighbours.extend(self.children)
         return neighbours
+
+    def set_distance(self, distance):
+        self.distance = distance
