@@ -3,9 +3,9 @@ import heapq
 from Board import Board
 from Node import Node
 import random
-from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.neighbors import DistanceMetric
 import numpy as np
+import time
 
 
 class Algorithms:
@@ -16,9 +16,12 @@ class Algorithms:
         self.goal = Board.from_array([0,1, 2, 3, 4, 5, 6, 7, 8])
         self.expanded = 0
         self.actions_taken = []
+        self.time = 0
         return
 
     def bfs_search(self) -> 'bool':
+
+        startTime = time.time()
 
         frontier = queue.Queue()
         expanded = 0
@@ -36,6 +39,7 @@ class Algorithms:
                 for node in nodes:
                     self.actions_taken.append(node.action_taken)
 
+                self.time = time.time() - startTime
                 return True
 
             explored.append(state.board.tiles)
@@ -44,14 +48,16 @@ class Algorithms:
             state.set_children()
 
             for neighbour in state.get_neighbours():
-                if neighbour is not None and neighbour.board.tiles not in list(frontier.queue) and neighbour.board.tiles not in explored:
-                    frontier.put_nowait(neighbour)
+                if neighbour is not None:
+                    if neighbour.board.tiles not in list(frontier.queue) and neighbour.board.tiles not in explored:
+                        frontier.put_nowait(neighbour)
 
         return False
 
     def a_star_search(self, heuristic: str) -> 'bool':
 
-        frontier = queue.PriorityQueue()
+        startTime = time.time()
+
         explored = []
         expanded = 0
 
@@ -65,10 +71,12 @@ class Algorithms:
 
         self.initial_state.set_distance(dist.pairwise(X))
 
-        frontier.put(self.initial_state)
+        heap_list = [self.initial_state]
+        heapq.heapify(heap_list)
 
-        while not frontier.empty():
-            state = frontier.get()
+        while True:
+            state = heap_list.pop()
+            print(list(state.board.tiles.values()))
 
             if state.board.__eq__(self.goal):
                 self.expanded = expanded
@@ -76,6 +84,7 @@ class Algorithms:
                 for node in nodes:
                     self.actions_taken.append(node.action_taken)
 
+                self.time = time.time() - startTime
                 return True
 
             explored.append(state.board.tiles)
@@ -85,13 +94,26 @@ class Algorithms:
 
             for neighbour in state.get_neighbours():
                 if neighbour is not None:
-                    if neighbour.board.tiles not in list(frontier.queue) and neighbour.board.tiles not in explored:
-                        X = [list(neighbour.board.tiles.values()),
-                             list(self.goal.tiles.values())]
-                        neighbour.set_distance(dist.pairwise(X))
-                        frontier.put(neighbour)
-                    elif neighbour.board.tiles in list(frontier.queue):
-                        print(neighbour.board.tiles)
+
+                    neighbour.set_distance(dist.pairwise(
+                        [list(neighbour.board.tiles.values()),
+                         list(self.goal.tiles.values())]
+                    ))
+
+                    if neighbour in heap_list:
+                        if np.less(neighbour.distance, np.add(neighbour.distance, state.distance)).all():
+                            heap_list.remove(neighbour)
+                            heapq.heapify(heap_list)
+
+                    if neighbour.board.tiles in explored:
+                        if np.less(neighbour.distance, np.add(neighbour.distance, state.distance)).all():
+                            explored.remove(neighbour.board.tiles)
+
+                    if neighbour not in heap_list and neighbour.board.tiles not in explored:
+                        heap_list.insert(0, neighbour)
+                        heapq.heapify(heap_list)
+                        neighbour.parent = state
+
 
         return False
 
@@ -118,5 +140,6 @@ class Algorithms:
 
         return {
             'actions': self.actions_taken,
-            'nodes_expanded': self.expanded
+            'nodes_expanded': self.expanded,
+            'time': self.time
         }

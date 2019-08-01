@@ -14,16 +14,16 @@ from Algorithms import Algorithms
 import random
 #
 random_array = random.sample(range(0, 9), 9)
-algorithms = Algorithms([1, 0, 2,
-                         3, 4, 5,
-                         6, 7, 8])
+# algorithms = Algorithms([0, 2, 5,
+#                         1, 4, 8,
+#                         3, 6, 7])
 
-# algorithms = Algorithms(random_array)
+algorithms = Algorithms(random_array)
 
 done = False
 # done = algorithms.bfs_search()
 
-done = algorithms.a_star_search('euclidean')
+done = algorithms.a_star_search('manhattan')
 
 if done:
     print(algorithms.solution_json())
