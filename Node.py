@@ -13,7 +13,7 @@ class Node:
         self.left = None
         self.right = None
         self.parent = None
-        self.action_taken = ""
+        self.action_taken = "start"
 
     @classmethod
     def from_node(cls, input_board: Board, parent: 'Node'):
