@@ -1,30 +1,18 @@
-###########################
-# this will be useful later
-###########################
-# manhattan_distances(X, Y=None, sum_over_features=True)
-# dist = DistanceMetric.get_metric('euclidean')
-# X = [[0, 1, 2],
-#          [3, 4, 5]]
-#
-# array = dist.pairwise(X)
-
-from Node import Node
-from Board import Board
 from Algorithms import Algorithms
 import random
 #
 random_array = random.sample(range(0, 9), 9)
-# algorithms = Algorithms([0, 2, 5,
-#                         1, 4, 8,
-#                         3, 6, 7])
 
-algorithms = Algorithms(random_array)
+algorithms = Algorithms([1, 2, 5,
+                         3, 4, 0,
+                         6, 7, 8])
+# algorithms = Algorithms(random_array)
 
 done = False
-# done = algorithms.bfs_search()
+done = algorithms.dfs_search()
 
-done = algorithms.a_star_search('manhattan')
-
+# done = algorithms.a_star_search('manhattan')
 if done:
     print(algorithms.solution_json())
-
+else:
+    print("false")

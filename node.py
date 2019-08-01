@@ -14,9 +14,7 @@ class Node:
         self.right = None
         self.parent = None
         self.action_taken = "start"
-        self.distance = list()
-        for i in range(0, 9):
-            self.distance.insert(i, 1)
+        self.distance = []
 
     def __lt__(self, other):
         return np.greater_equal(self.distance, other.distance).all()
@@ -37,7 +35,7 @@ class Node:
             self.up.action_taken = 'up'
             self.children.append(self.up)
         except Exception as e:
-            e
+            print(e)
         return self.up
 
     def set_down(self):
@@ -47,7 +45,7 @@ class Node:
             self.down.action_taken = 'down'
             self.children.append(self.down)
         except Exception as e:
-            e
+            print(e)
         return self.down
 
     def set_left(self):
@@ -57,7 +55,7 @@ class Node:
             self.left.action_taken = 'left'
             self.children.append(self.left)
         except Exception as e:
-            e
+            print(e)
         return self.left
 
     def set_right(self):
@@ -67,14 +65,14 @@ class Node:
             self.right.action_taken = 'right'
             self.children.append(self.right)
         except Exception as e:
-            e
+            print(e)
         return self.right
 
     def set_children(self):
-        self.set_down()
-        self.set_right()
         self.set_up()
+        self.set_down()
         self.set_left()
+        self.set_right()
 
     def backtrack(self) -> []:
         nodes = []

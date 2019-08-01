@@ -2,6 +2,7 @@ import queue
 import heapq
 from Board import Board
 from Node import Node
+from Stack import Stack
 import random
 from sklearn.neighbors import DistanceMetric
 import numpy as np
@@ -21,7 +22,7 @@ class Algorithms:
 
     def bfs_search(self) -> 'bool':
 
-        startTime = time.time()
+        start_time = time.time()
 
         frontier = queue.Queue()
         expanded = 0
@@ -39,7 +40,7 @@ class Algorithms:
                 for node in nodes:
                     self.actions_taken.append(node.action_taken)
 
-                self.time = time.time() - startTime
+                self.time = time.time() - start_time
                 return True
 
             explored.append(state.board.tiles)
@@ -54,9 +55,47 @@ class Algorithms:
 
         return False
 
+    def dfs_search(self) ->'bool':
+
+        start_time = time.time()
+
+        depth = 0
+        limit = 100
+        frontier = Stack()
+        explored = list()
+        frontier.push(self.initial_state)
+        while not frontier.is_empty():
+
+            print(frontier.stack)
+            state = frontier.pop()
+
+            if limit >= depth:
+
+                explored.append(state.board.tiles)
+                self.expanded += 1
+                print(state.board.tiles)
+                print(explored)
+                print(explored.__len__())
+                print(frontier.stack.__len__())
+                print(depth)
+                if state.board.__eq__(self.goal):
+                    self.finalize(state)
+                    self.time = time.time() - start_time
+                    return True
+                state.set_children()
+                for neighbour in state.get_neighbours():
+                    if neighbour is not None and neighbour not in frontier.stack and neighbour.board.tiles not in explored: ######---> frontier union explored
+                        frontier.push(neighbour)
+                        depth += 1
+            else:
+                depth -= 1
+                continue
+        return False
+
+
     def a_star_search(self, heuristic: str) -> 'bool':
 
-        startTime = time.time()
+        start_time = time.time()
 
         explored = []
         expanded = 0
@@ -84,7 +123,7 @@ class Algorithms:
                 for node in nodes:
                     self.actions_taken.append(node.action_taken)
 
-                self.time = time.time() - startTime
+                self.time = time.time() - start_time
                 return True
 
             explored.append(state.board.tiles)
@@ -114,32 +153,18 @@ class Algorithms:
                         heapq.heapify(heap_list)
                         neighbour.parent = state
 
-
-        return False
-
-    def dfs_search(self, initial_state: Board, goal: Board) -> 'bool':
-
-        frontier = queue.LifoQueue(maxsize=32)
-        frontier.put_nowait(initial_state)
-        explored = set()
-
-        while not frontier.empty():
-            state = frontier.get_nowait()
-            explored.add(state)
-
-            if state.__eq__(goal):
-                return True
-
-            for neighbor in state.neighbors():
-                if neighbor not in frontier and neighbor not in explored:
-                    frontier.put_nowait(neighbor)
-
         return False
 
     def solution_json(self):
 
         return {
-            'actions': self.actions_taken,
             'nodes_expanded': self.expanded,
-            'time': self.time
+            'time': self.time,
+            'actions': self.actions_taken,
         }
+
+    def finalize(self,state: Node):
+        nodes = state.backtrack()
+        for node in nodes:
+            self.actions_taken.append(node.action_taken)
+
