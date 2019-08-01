@@ -14,3 +14,8 @@ class Stack:
             return None
     def length(self):
         return self.stack.__len__()
+    def is_empty(self):
+        if self.stack.__len__() == 0:
+            return False
+        else:
+            return True

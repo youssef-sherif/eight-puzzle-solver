@@ -1,5 +1,5 @@
 from Board import Board
-# from Queue import Queue
+from Queue import Queue
 
 class Node:
     children = []
@@ -69,8 +69,8 @@ class Node:
         neighbours.extend(self.children)
         return neighbours
 
-    def build(self):
-
+    def build_tree(self):
+        
         return
 #
 # class Tree:
