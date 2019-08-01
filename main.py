@@ -8,18 +8,21 @@
 #
 # array = dist.pairwise(X)
 
-from node import Node
+from Node import Node
 from Board import Board
-x= random.sample(range(0, 9), 9)
-try:
-    board= Board.from_array(x)
-except Exception as e:
-    print(e)
-node = Node(board)
-print(node.board.tiles)
-node.set_children()
-# print(node.board.up().tiles)
-for child in node.children:
-    print(child.board.tiles)
-print(node.children)
-print(node.board.tiles)
+from Algorithms import Algorithms
+import random
+#
+random_array = random.sample(range(0, 9), 9)
+algorithms = Algorithms([1, 2, 5,
+                         3, 4, 0,
+                         6, 7, 8])
+
+done = False
+done = algorithms.bfs_search()
+
+# done = algorithms.a_star_search('euclidean')
+
+if done:
+    print(algorithms.solution_json())
+

@@ -12,6 +12,7 @@ class Algorithms:
         board = Board.from_array(array)
         self.initial_state = Node(board)
         self.goal = Board.from_array([0,1, 2, 3, 4, 5, 6, 7, 8])
+        self.expanded = 0
         return
 
     def bfs_search(self) -> 'bool':
@@ -27,6 +28,14 @@ class Algorithms:
             print(list(state.board.tiles.values()))
 
             if state.board.__eq__(self.goal):
+                self.expanded = expanded
+                nodes = state.backtrack()
+                actions_taken = []
+                for node in nodes:
+                    actions_taken.append(node.action_taken)
+
+                print(actions_taken)
+
                 return True
 
             explored.append(state.board.tiles)
@@ -64,10 +73,11 @@ class Algorithms:
             for child in state.children:
                 if heuristic == 'euclidean':
                     dist = DistanceMetric.get_metric('euclidean')
-                    print(list(child.board.tiles.values()))
                     X = [list(child.board.tiles.values()),
                          list(self.goal.tiles.values())]
+                    print(X)
                     array = dist.pairwise(X)
+                    print(array)
                     frontier.put_nowait(array)
 
         return False
@@ -83,7 +93,6 @@ class Algorithms:
             explored.add(state)
 
             if state.__eq__(goal):
-
                 return True
 
             for neighbor in state.neighbors():
@@ -92,10 +101,10 @@ class Algorithms:
 
         return False
 
-
     def solution_json(self):
 
         return {
-            'actions': self.actions,
-            'solution': self.tiles
+            # 'actions': self.actions,
+            # 'solution': self.tiles,
+            'nodes_expanded': self.expanded
         }

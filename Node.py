@@ -1,6 +1,7 @@
 from Board import Board
 # from Queue import Queue
 
+
 class Node:
     children = []
     
@@ -11,13 +12,13 @@ class Node:
         self.down = None
         self.left = None
         self.right = None
-
-        return
+        self.parent = None
+        self.action_taken = ""
 
     @classmethod
     def from_node(cls, input_board: Board, parent: 'Node'):
-
         cls.parent = parent
+
         return cls(input_board)
 
     def get_board(self):
@@ -26,8 +27,9 @@ class Node:
     def set_up(self):
         try:
             self.up = Node.from_node(self.board.up(), self)
+            self.up.parent = self
+            self.up.action_taken = 'up'
             self.children.append(self.up)
-            print('move up')
         except Exception as e:
             print(e)
         return self.up
@@ -35,8 +37,9 @@ class Node:
     def set_down(self):
         try:
             self.down = Node.from_node(self.board.down(),self)
+            self.down.parent = self
+            self.down.action_taken = 'down'
             self.children.append(self.down)
-            print('move down')
         except Exception as e:
             print(e)
         return self.down
@@ -44,8 +47,9 @@ class Node:
     def set_left(self):
         try:
             self.left = Node.from_node(self.board.left(),self)
+            self.left.parent = self
+            self.left.action_taken = 'left'
             self.children.append(self.left)
-            print('move left')
         except Exception as e:
             print(e)
         return self.left
@@ -53,8 +57,9 @@ class Node:
     def set_right(self):
         try:
             self.right = Node.from_node(self.board.right(),self)
+            self.right.parent = self
+            self.right.action_taken = 'right'
             self.children.append(self.right)
-            print('move right')
         except Exception as e:
             print(e)
         return self.right
@@ -64,6 +69,14 @@ class Node:
         self.set_down()
         self.set_left()
         self.set_right()
+
+    def backtrack(self) -> []:
+        nodes = []
+        node = self
+        while node is not None:
+            nodes.append(node)
+            node = node.parent
+        return nodes[::-1]
 
     def get_neighbours(self):
         neighbours = [self.parent]
