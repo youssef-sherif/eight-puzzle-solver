@@ -14,8 +14,8 @@ from Algorithms import Algorithms
 import random
 #
 random_array = random.sample(range(0, 9), 9)
-algorithms = Algorithms([1, 2, 5,
-                         3, 4, 0,
+algorithms = Algorithms([1, 4, 2,
+                         3, 0, 5,
                          6, 7, 8])
 
 done = False

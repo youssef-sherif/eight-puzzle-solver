@@ -41,9 +41,9 @@ class Algorithms:
 
             state.set_children()
 
-            for child in state.children:
-                if child.board.tiles not in list(frontier.queue) and child.board.tiles not in explored:
-                    frontier.put_nowait(child)
+            for neighbour in state.get_neighbours():
+                if neighbour is not None and neighbour.board.tiles not in list(frontier.queue) and neighbour.board.tiles not in explored:
+                    frontier.put_nowait(neighbour)
 
         return False
 
@@ -68,10 +68,10 @@ class Algorithms:
 
             state.set_children()
 
-            for child in state.children:
+            for neighbour in state.get_neighbours():
                 if heuristic == 'euclidean':
                     dist = DistanceMetric.get_metric('euclidean')
-                    X = [list(child.board.tiles.values()),
+                    X = [list(neighbour.board.tiles.values()),
                          list(self.goal.tiles.values())]
                     print(X)
                     array = dist.pairwise(X)
