@@ -13,6 +13,7 @@ class Algorithms:
         self.initial_state = Node(board)
         self.goal = Board.from_array([0,1, 2, 3, 4, 5, 6, 7, 8])
         self.expanded = 0
+        self.actions_taken = []
         return
 
     def bfs_search(self) -> 'bool':
@@ -30,11 +31,8 @@ class Algorithms:
             if state.board.__eq__(self.goal):
                 self.expanded = expanded
                 nodes = state.backtrack()
-                actions_taken = []
                 for node in nodes:
-                    actions_taken.append(node.action_taken)
-
-                print(actions_taken)
+                    self.actions_taken.append(node.action_taken)
 
                 return True
 
@@ -104,7 +102,7 @@ class Algorithms:
     def solution_json(self):
 
         return {
-            # 'actions': self.actions,
+            'actions': self.actions_taken,
             # 'solution': self.tiles,
             'nodes_expanded': self.expanded
         }
