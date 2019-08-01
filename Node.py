@@ -71,10 +71,11 @@ class Node:
         return self.right
 
     def set_children(self):
-        self.set_down()
+
         self.set_right()
-        self.set_up()
         self.set_left()
+        self.set_up()
+        self.set_down()
 
     def backtrack(self) -> []:
         nodes = []

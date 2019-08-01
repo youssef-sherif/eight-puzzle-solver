@@ -56,7 +56,7 @@ class Algorithms:
         start_time = time.time()
 
         depth = 0
-        limit = 100
+        limit = 1000
         frontier = Stack()
         explored = list()
         frontier.push(self.initial_state)
@@ -126,12 +126,12 @@ class Algorithms:
                     neighbour.set_distance(dist.pairwise(X))
 
                     if neighbour in heap_list:
-                        if np.less(neighbour.distance, np.add(neighbour.distance, state.distance)).all():
+                        if np.less(neighbour.distance, state.distance).all():
                             heap_list.remove(neighbour)
                             heapq.heapify(heap_list)
 
                     if neighbour.board.tiles in explored:
-                        if np.less(neighbour.distance, np.add(neighbour.distance, state.distance)).all():
+                        if np.less(neighbour.distance, state.distance).all():
                             explored.remove(neighbour.board.tiles)
 
                     if neighbour not in heap_list and neighbour.board.tiles not in explored:

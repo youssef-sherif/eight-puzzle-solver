@@ -1,6 +1,5 @@
 from Algorithms import Algorithms
 import random
-import time
 
 random_array = random.sample(range(0, 9), 9)
 
@@ -11,13 +10,12 @@ algorithms = Algorithms([1, 2, 5,
 
 done = False
 done = algorithms.dfs_search()
-if done:
-    print(algorithms.solution_json())
-#
+
 # done = algorithms.bfs_search()
-# if done:
-#     print(algorithms.solution_json())
 
 # done = algorithms.a_star_search('manhattan')
-# if done:
-#     print(algorithms.solution_json())
+#
+if done:
+    print(algorithms.solution_json())
+else:
+    print('sorry')

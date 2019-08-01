@@ -1,32 +1,41 @@
 from flask import Flask, json, g, request
+from flask_cors import CORS, cross_origin
 import random
 from Board import Board
-
+from Algorithms import Algorithms
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 
-@app.route("/board", methods=["GET"])
+@app.route("/random-board", methods=["GET"])
+@cross_origin(origin='http://localhost:3000')
 def get_random_board():
     random_numbers = random.sample(range(0, 9), 9)
-    i = 0
-    dictionary = {}
-    for number in random_numbers:
-        dictionary[i] = number
-        i += 1
 
-    board = Board.from_dictionary(dictionary)
-
-    return json_response(board.to_json())
+    return json_response({"board": random_numbers})
 
 
-@app.route("/board", methods=["POST"])
-def solve_board(board: Board):
-    return json_response("solved")
+@app.route("/solve-board", methods=["POST"])
+@cross_origin(origin='http://localhost:3000')
+def solve_board():
+    algorithms = Algorithms(request.get_json()['state'])
+    done = False
+    try:
+        done = algorithms.a_star_search(request.get_json()['heuristic'])
+
+    except Exception as e:
+        print(e)
+    if done:
+        return json_response(algorithms.solution_json())
+    else:
+        return json_response("failed")
 
 
 def json_response(payload, status=200):
     return json.dumps(payload), status, {'content-type': 'application/json'}
 
+
 if __name__ == "__main__":
     app.run(debug=True)
+    logging.getLogger('flask_cors').level = logging.DEBUG
