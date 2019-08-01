@@ -10,44 +10,35 @@ class Board:
     actions = list()
 
     def __eq__(self, board: 'Board') -> 'bool':
-        for key in list(self.tiles.keys()):
-            if key not in list(board.tiles.keys()):
+        for i in range(0, 9):
+            if self.tiles[i] != board.tiles[i]:
                 return False
         return True
 
     def __init__(self, tiles: {}):
         self.tiles = tiles
+        self.empty_tile_location = int(get_empty_tile_location(self.tiles))
 
     @classmethod
     def from_previous(cls, tiles: {}) -> 'Board':
         cls.tiles = tiles.copy()
-        cls.empty_tile_location = int(get_empty_tile_location(cls.tiles))
 
         return cls(cls.tiles)
 
     @classmethod
     def from_array(cls, numbers: []) -> 'Board':
         tiles = {}
-        cls.actions = list()
         for i in range(0, 9):
             tiles[i] = numbers[i]
         cls.tiles = tiles
-        cls.empty_tile_location = int(get_empty_tile_location(cls.tiles))
 
         return cls(cls.tiles)
-
-    def solution_json(self):
-
-        return {
-            'actions': self.actions,
-            'solution': self.tiles
-        }
 
     def up(self) -> 'Board':
         if self.can_move_up():
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location - 3, self.empty_tile_location, board)
-            self.actions.insert(self.actions.__len__(), 'up')
+            board.empty_tile_location = int(get_empty_tile_location(board.tiles))
 
             return board
         else:
@@ -57,7 +48,7 @@ class Board:
         if self.can_move_down():
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location + 3, self.empty_tile_location, board)
-            self.actions.insert(self.actions.__len__(), 'down')
+            board.empty_tile_location = int(get_empty_tile_location(board.tiles))
 
             return board
         else:
@@ -67,7 +58,7 @@ class Board:
         if self.can_move_left():
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location - 1, self.empty_tile_location, board)
-            self.actions.insert(self.actions.__len__(), 'left')
+            board.empty_tile_location = int(get_empty_tile_location(board.tiles))
 
             return board
         else:
@@ -77,7 +68,7 @@ class Board:
         if self.can_move_right():
             board = Board.from_previous(self.tiles)
             board = swap(self.empty_tile_location + 1, self.empty_tile_location, board)
-            self.actions.insert(self.actions.__len__(), 'right')
+            board.empty_tile_location = int(get_empty_tile_location(board.tiles))
 
             return board
         else:
