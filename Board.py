@@ -90,6 +90,14 @@ class Board:
         return not (int(self.empty_tile_location) == 2 or int(self.empty_tile_location) == 5 or int(
             self.empty_tile_location) == 8)
 
+    def display(self):
+        j = 0
+        for i in range(0, 3):
+            print(str(self.tiles[j]) + " " + str(self.tiles[j+1]) + " " + str(self.tiles[j+2]))
+            j += 3
+
+        print('\n')
+
 
 ################
 # helper methods

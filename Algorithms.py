@@ -32,15 +32,11 @@ class Algorithms:
         while not frontier.empty():
             state = frontier.get_nowait()
 
-            print(list(state.board.tiles.values()))
-
             if state.board.__eq__(self.goal):
                 self.expanded = expanded
-                nodes = state.backtrack()
-                for node in nodes:
-                    self.actions_taken.append(node.action_taken)
-
+                self.finalize(state)
                 self.time = time.time() - start_time
+
                 return True
 
             explored.append(state.board.tiles)
@@ -66,21 +62,16 @@ class Algorithms:
         frontier.push(self.initial_state)
         while not frontier.is_empty():
 
-            print(frontier.stack)
             state = frontier.pop()
 
             if limit >= depth:
 
                 explored.append(state.board.tiles)
                 self.expanded += 1
-                print(state.board.tiles)
-                print(explored)
-                print(explored.__len__())
-                print(frontier.stack.__len__())
-                print(depth)
                 if state.board.__eq__(self.goal):
                     self.finalize(state)
                     self.time = time.time() - start_time
+
                     return True
                 state.set_children()
                 for neighbour in state.get_neighbours():
@@ -91,7 +82,6 @@ class Algorithms:
                 depth -= 1
                 continue
         return False
-
 
     def a_star_search(self, heuristic: str) -> 'bool':
 
@@ -115,15 +105,12 @@ class Algorithms:
 
         while True:
             state = heap_list.pop()
-            print(list(state.board.tiles.values()))
 
             if state.board.__eq__(self.goal):
                 self.expanded = expanded
-                nodes = state.backtrack()
-                for node in nodes:
-                    self.actions_taken.append(node.action_taken)
-
+                self.finalize(state)
                 self.time = time.time() - start_time
+
                 return True
 
             explored.append(state.board.tiles)
@@ -134,10 +121,9 @@ class Algorithms:
             for neighbour in state.get_neighbours():
                 if neighbour is not None:
 
-                    neighbour.set_distance(dist.pairwise(
-                        [list(neighbour.board.tiles.values()),
+                    X = [list(neighbour.board.tiles.values()),
                          list(self.goal.tiles.values())]
-                    ))
+                    neighbour.set_distance(dist.pairwise(X))
 
                     if neighbour in heap_list:
                         if np.less(neighbour.distance, np.add(neighbour.distance, state.distance)).all():
@@ -167,4 +153,5 @@ class Algorithms:
         nodes = state.backtrack()
         for node in nodes:
             self.actions_taken.append(node.action_taken)
+            node.board.display()
 
