@@ -12,6 +12,11 @@ An AI program that solves the famous 8 puzzle problem using different Search Tec
   $ python3 main.py
  ```
  
+# Unit Tests
+```
+ $ python3 test_Board.py 
+```
+ 
 # Sample Run Using AStar Algorithm and manhattan approximation
 ```
 1 2 5
